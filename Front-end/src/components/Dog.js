@@ -15,23 +15,25 @@ import axios from "axios";
 
 const Dog = () => {
   const navigate = useNavigate();
-  const [product,setProduct]=useState([])
+  const [product, setProduct] = useState([]);
 
-  const category="DOG";
+  const category = "DOG";
 
-  useEffect(()=>{
-    const DogProducts=async()=>{
-        try {
-           const response=await axios.get(`http://localhost:5000/api/users/products/category/${category}`)
-           console.log(response.data.products);
-           setProduct(response.data.products)
-        } catch (error) {
-          console.log("error fetching the product",error)
-         toast.error("error")
-        }
-    }
-    DogProducts()
-  },[])
+  useEffect(() => {
+    const DogProducts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/users/products/category/${category}`
+        );
+        console.log(response.data.products);
+        setProduct(response.data.products);
+      } catch (error) {
+        console.log("error fetching the product", error);
+        toast.error("error");
+      }
+    };
+    DogProducts();
+  }, []);
 
   return (
     <div style={{ background: "rgb(230, 230, 219)" }}>
@@ -44,7 +46,7 @@ const Dog = () => {
           {product.map((item) => (
             <div
               key={item._id}
-               className="d-flex align-items-center justify-content-center flex-wrap"
+              className="d-flex align-items-center justify-content-center flex-wrap"
             >
               <Card
                 className="shadow p-3 m-2 bg-body-tertiary rounded"
