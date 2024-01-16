@@ -1,0 +1,24 @@
+.nav-title {
+  padding: 10px;
+  font-size: 35px;
+}
+.nav-links {
+  font-size: 20px;
+  font-weight: 600;
+}
+.nav {
+  background: rgb(223, 219, 219);
+  
+}
+
+.underline-collection:hover {
+  text-decoration: underline;
+}
+
+.underline-cat:hover {
+  text-decoration: underline;
+}
+
+.underline-dog:hover {
+  text-decoration: underline;
+}
