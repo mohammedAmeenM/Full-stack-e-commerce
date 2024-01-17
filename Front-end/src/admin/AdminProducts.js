@@ -66,7 +66,7 @@ const AdminProducts = () => {
               <th>Action</th>
             </tr>
             {product.map((item) => (
-              <tr>
+              <tr key={item._id}>
                 <td>{item._id}</td>
                 <td style={{ textAlign: "center" }}>
                   <img

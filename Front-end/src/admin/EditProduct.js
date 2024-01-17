@@ -130,8 +130,8 @@ const EditProduct = () => {
                   value={product.category}
                   onChange={handleChange}
                 >
-                  <option value="Dog">DOG</option>
-                  <option value="Cat">CAT</option>
+                  <option value="DOG">DOG</option>
+                  <option value="CAT">CAT</option>
                 </select>
               </Form.Group>
               {/* <Form.Group>
