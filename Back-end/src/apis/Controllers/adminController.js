@@ -149,28 +149,28 @@ const updateProduct = asyncErrorHandler(async (req, res) => {
     });
   });
   
-  const deleteProduct=asyncErrorHandler(async(req,res)=>{
-    const {productId}=req.body;
-    console.log(productId);
-    if(!mongoose.Types.ObjectId.isValid(productId)){
-        return res.status(400).json({
-            status:'fail',
-            message:'invalid product ID format'
-        })
-    }
-    const deletePro= await productSchema.findByIdAndDelete({_id:productId})
-        if(!deletePro){
-            return res.status(404).json({
+    const deleteProduct=asyncErrorHandler(async(req,res)=>{
+        const {productId}=req.body; 
+        console.log(productId);
+        if(!mongoose.Types.ObjectId.isValid(productId)){
+            return res.status(400).json({
                 status:'fail',
-                message:'product not found'
+                message:'invalid product ID format'
             })
         }
-        res.status(200).json({
-            status:'success',
-            message:'successfully delete product'
+        const deletePro= await productSchema.findByIdAndDelete({_id:productId})
+            if(!deletePro){
+                return res.status(404).json({
+                    status:'fail',
+                    message:'product not found'
+                })
+            }
+            res.status(200).json({
+                status:'success',
+                message:'successfully delete product'
 
-        })
-  })
+            })
+    })
 
   const status=asyncErrorHandler(async(req,res)=>{
        const totalRevenue=await Order.aggregate([

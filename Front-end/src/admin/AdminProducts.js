@@ -1,16 +1,44 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import { Button, Container, Table } from "react-bootstrap";
-import { UserLogin } from "../App";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const AdminProducts = () => {
-  const { product, setProduct } = useContext(UserLogin);
   const navigate = useNavigate();
-  const Remove = (id) => {
-    const newUpdate = product.filter((item) => item.Id !== id);
-    setProduct(newUpdate);
-  };
+  const [product,setProduct]=useState([])
+
+  async function allProducts (){
+    try {
+        const response=await axios.get("http://localhost:5000/api/admin/products")
+        console.log(response.data.products);
+        setProduct(response.data.products)
+      } catch (error) {
+        console.log(error)
+        toast.error(error.message || "Failed to fetch products")
+      }
+    }
+    useEffect(()=>{
+    allProducts()
+  },[])
+
+  const Remove=async(id)=>{
+    try {
+     const productId=id;
+     console.log(productId  )
+     const response = await axios.delete("http://localhost:5000/api/admin/products", {
+      data: { productId: productId }  
+    })
+    allProducts()
+      console.log(response);
+    } catch (error) {
+      console.log(error)
+        toast.error(error.message || "Failed to fetch products")
+    }
+
+  }
+ 
   return (
     <div style={{ display: "flex" }}>
       <SideBar />
@@ -39,27 +67,27 @@ const AdminProducts = () => {
             </tr>
             {product.map((item) => (
               <tr>
-                <td>{item.Id}</td>
+                <td>{item._id}</td>
                 <td style={{ textAlign: "center" }}>
                   <img
                     style={{ height: "2rem" }}
-                    src={item.Image}
-                    alt={item.ProductName}
+                    src={item.image}
+                    alt={item.title}
                   />
                 </td>
-                <td>{item.ProductName}</td>
-                <td>{item.OldPrice}</td>
-                <td>{item.Price}</td>
-                <td>{item.Animal}</td>
-                <td>{item.Stock}</td>
+                <td>{item.title}</td>
+                <td>###</td>
+                <td>{item.price}</td>
+                <td>{item.category}</td>
+                <td>$$$</td>
                 <td style={{ textAlign: "center" }}>
                   <Button
                     style={{ marginRight: "30px" }}
-                    onClick={() => navigate(`/editproduct/${item.Id}`)}
+                    onClick={() => navigate(`/editproduct/${item._id}`)}
                   >
                     Edit
                   </Button>
-                  <Button className="bg-danger" onClick={() => Remove(item.Id)}>
+                  <Button className="bg-danger" onClick={()=>Remove(item._id)}>
                     Remove
                   </Button>
                 </td>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -5,31 +6,41 @@ import { toast } from "react-toastify";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const adminName = useRef();
+  const adminEmail = useRef();
   const adminPassword = useRef();
   const [error, setErrorMessage] = useState("");
-  const handileAdmin = () => {
-    const newAdminName = adminName.current.value;
+  const handileAdmin =async () => {
+    const newAdminEmail = adminEmail.current.value;
     const newAdminPassword = adminPassword.current.value;
 
-    if (!newAdminName || !newAdminPassword) {
+    if (!newAdminEmail || !newAdminPassword) {
       setErrorMessage("Please fill in all fields.");
       return;
     }
-    if (newAdminName !== "admin") {
+    if (newAdminEmail !== "amiameen507@gmail.com") {
       setErrorMessage("Please Enter correct Username");
       return;
     }
     if (newAdminPassword !== "admin123") {
       setErrorMessage("please enter correct Password");
     }
-    const Admin = newAdminName === "admin" && newAdminPassword === "admin123";
-    if (Admin) {
+    try {
+      const data={
+        email:newAdminEmail,
+        password:newAdminPassword
+      }
+
+      const response=await axios.post('http://localhost:5000/api/admin/login',data)
+      console.log(response.data.data);
+      localStorage.setItem("admin_Token",response.data.data)
       toast.success("admin Login success");
       navigate("/adminpage");
-    } else {
-      toast.error("please enter valied username or password");
+    } catch (error) {
+      toast.error("please enter valied username or password"||error); 
     }
+    
+
+   
   };
   return (
     <div>
@@ -50,7 +61,7 @@ const AdminLogin = () => {
               style={{ borderRadius: "20px", textAlign: "center" }}
             >
               <input
-                ref={adminName}
+                ref={adminEmail}
                 type="text"
                 placeholder="User Name.."
                 style={{

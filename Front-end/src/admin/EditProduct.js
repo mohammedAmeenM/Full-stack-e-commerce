@@ -1,45 +1,71 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserLogin } from "../App";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const EditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { product, setProduct } = useContext(UserLogin);
+  const [product,setProduct]=useState({
+      title: "",
+      image: "",
+      description: "",
+      price: "",
+      category: "",
+   })
 
-  const editProduct = product.find((item) => item.Id === parseInt(id));
+   useEffect(()=>{
+      const fetchProduct=async()=>{
+        try {
+           const response=await axios.get(`http://localhost:5000/api/admin/products/${id}`)
+           console.log(response.data.product);
+           const { _id, title, image, price, description, category } = response.data.product;
+           setProduct({ 
+            id: _id,
+            title,
+            image,
+            price,
+            category,
+            description
+          })
+         
+        } catch (error) {
+           console.log(error)
+           toast.error(error.message || "Failed to fetch products")
+        }
+      }
+      fetchProduct()
+   },[id])
 
-  const [productName, setProductName] = useState(editProduct.ProductName);
-  const [price, setPrice] = useState(editProduct.Price);
-  const [oldPrice, setOldPrice] = useState(editProduct.OldPrice);
-  const [animal, setAnimal] = useState(editProduct.Animal);
-  const [image, setImage] = useState(editProduct.Image);
-  const [stock, setStock] = useState(editProduct.Stock);
-  console.log(editProduct);
-  const submit = (e) => {
+ 
+  
+  const submit = async(e) => {
     e.preventDefault();
-
-    const updatedProduct = {
-      ...editProduct,
-      Image: image,
-      ProductName: productName,
-      OldPrice: oldPrice,
-      Price: price,
-      Animal: animal,
-      Stock: stock,
-    };
-
-    const updatedProducts = product.map((item) =>
-      item.Id === parseInt(id) ? updatedProduct : item
-    );
-    console.log(updatedProduct);
-    setProduct(updatedProducts);
-    toast.success("successfully edited");
-    navigate("/adminproduct");
+    try {
+      const response=await axios.put("http://localhost:5000/api/admin/products",product)
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Product Edited Successfully");
+        navigate('/adminproduct')
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+   
   };
+
+  const handleChange =  (a) => {
+    const { name, value } = a.target;
+    console.log(value)
+    setProduct((PrevData) => ({
+      ...PrevData,
+      [name]: value,
+    }));
+  };
+  
 
   return (
     <div style={{ display: "flex" }}>
@@ -58,10 +84,11 @@ const EditProduct = () => {
               <Form.Group>
                 <Form.Label>Edit Img src:</Form.Label>
                 <Form.Control
-                  type="text"
-                  name="Image"
-                  defaultValue={editProduct.Image}
-                  onChange={(e) => setImage(e.target.value)}
+                   type="text"
+                   name="title"
+                   id="title"
+                  value={product.title}
+                  onChange={handleChange}
                 />
               </Form.Group>
               <Form.Group>
@@ -69,41 +96,45 @@ const EditProduct = () => {
                 <Form.Control
                   type="text"
                   name="ProductName"
-                  defaultValue={editProduct.ProductName}
-                  onChange={(e) => setProductName(e.target.value)}
+                  value={product.image}
+                  onChange={handleChange}
                 />
               </Form.Group>
-              <Form.Group>
-                <Form.Label>Edit price:</Form.Label>
+               <Form.Group>
+                <Form.Label>Edit description:</Form.Label>
                 <Form.Control
                   type="text"
-                  name="OldPrice"
-                  defaultValue={editProduct.OldPrice}
-                  onChange={(e) => setOldPrice(e.target.value)}
+                  name="description"
+                  id="description"
+                  value={product.description}
+                  onChange={handleChange}
                 />
-              </Form.Group>
+              </Form.Group> 
               <Form.Group>
                 <Form.Label>Edit Actual price:</Form.Label>
                 <Form.Control
-                  type="text"
-                  name="Price"
-                  defaultValue={editProduct.Price}
-                  onChange={(e) => setPrice(e.target.value)}
+                   type="text"
+                   name="price"
+                   id="price"
+                  value={product.price}
+                  onChange={handleChange}
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Edit Animal:</Form.Label> <br />
+                <Form.Label>Edit Category:</Form.Label> <br />
                 <select
                   style={{ width: "200px" }}
-                  name="Aminal"
-                  defaultValue={editProduct.Animal}
-                  onChange={(e) => setAnimal(e.target.value)}
+                  type="text"
+                  name="category"
+                  id="category"
+                  value={product.category}
+                  onChange={handleChange}
                 >
-                  <option value="Dog">Dog</option>
-                  <option value="Cat">Cat</option>
+                  <option value="Dog">DOG</option>
+                  <option value="Cat">CAT</option>
                 </select>
               </Form.Group>
-              <Form.Group>
+              {/* <Form.Group>
                 <Form.Label>Edit Stock:</Form.Label>
                 <Form.Control
                   type="text"
@@ -111,7 +142,7 @@ const EditProduct = () => {
                   defaultValue={editProduct.Stock}
                   onChange={(e) => setStock(e.target.value)}
                 />
-              </Form.Group>
+              </Form.Group> */}
               <Button className="m-3" type="submit" variant="primary">
                 Save
               </Button>
