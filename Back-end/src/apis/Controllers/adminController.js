@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const productSchema = require('../model/productSchema');
 const asyncErrorHandler=require('../utils/asyncErrorHandler');
 const User = require('../model/userSchema');
-const Order=require('../model/orderSchema')
+const Order=require('../model/orderSchema');
+const Category = require('../model/categorySchema')
+
 
  
 const adminLogin=async (req,res)=>{
@@ -68,10 +70,10 @@ const userById=  async (req,res)=>{
 }
 
 const createProduct= async(req,res)=>{
-     const {title,description,price,image,category}=req.body;
+     const {title,description,price,image,category,stock}=req.body;
      console.log(req.body);
      const newProduct= await productSchema.create({
-        title,description,price,image,category  
+        title,description,price,image,category,qty:1,stock  
      })
      res.status(201).json({
         status: 'success',
@@ -118,7 +120,7 @@ const adminProductById=asyncErrorHandler(async(req,res)=>{
 })
 
 const updateProduct = asyncErrorHandler(async (req, res) => {
-    const { id, title, description, price, image, category } = req.body;
+    const { id, title, description, price, image, category ,stock} = req.body;
   
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
@@ -138,7 +140,7 @@ const updateProduct = asyncErrorHandler(async (req, res) => {
   
     const update = await productSchema.findByIdAndUpdate(
       { _id: id },
-      { title, description, price, image, category },
+      { title, description, price, image, category,stock },
       { new: true }
     );
   
@@ -210,9 +212,105 @@ const updateProduct = asyncErrorHandler(async (req, res) => {
     });
   })
 
+  const createCategory=asyncErrorHandler(async(req,res)=>{
+    try {
+        const {name} = req.body
+    console.log(name);
+    if(!name){
+      return res.status(401).json({
+        status:'error',
+        message:'name not requeird'
+      })
+    }
+    const existingCategory=await Category.findOne({name})
+    if(existingCategory){
+        return res.status(409).json({
+          status:'error',
+          message:'Category already exisits'
+        })
+      }
+      const category = await new categoryModel({name, slug:slugify(name)}).save()
+      res.status(201).json({
+        status:'success',
+        message:'successfully category created',
+        data:category
+        
+      })
+    } catch (error) {
+        res.status(500).json({
+            status:'error',
+            message:'Error in category'
+          })
+    }
+  })
+  
+const getAllCategory = asyncErrorHandler(async(req,res)=>{
+    try {
+      const category = await Category.find({})
+      res.status(200).json({
+        status:'success',
+        message:'successfully feached all category',
+        data:category
+        
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status:'error',
+        message:'internal server error'
+      })
+    }
+    })
+
+    //update category
+
+    const updateCategory =asyncErrorHandler(async (req,res)=>{
+    try {
+      const {name} = req.body
+      const {id} = req.params
+      const category = await Category.findByIdAndUpdate(id,
+        {name, slug:slugify(name)},
+      {new:true});
+    res.status(200).json({
+      status:'success',
+      message:'Category updated successfully',
+      category
+    })
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status:'error',
+        message:'internal server error'
+      })
+    }
+    })
+    
+    
+    //delete category
+    const deleteCategory =async (req,res)=>{
+    try {
+      const {id} = req.params
+      await Category.findByIdAndDelete(id)
+      res.status(200).json({
+        status:'success',
+        message:'Category removed successfully'
+    
+      })
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status:'error',
+        message:'internal server error'
+      })
+    }
+    }
+    
+    
+    
+
 
 
 module.exports={
     adminLogin,allUsers,userById,createProduct,adminListProducts,adminProductById,updateProduct,deleteProduct,
-    status,orderDtails
+    status,orderDtails,createCategory,getAllCategory,updateCategory,deleteCategory
 } 

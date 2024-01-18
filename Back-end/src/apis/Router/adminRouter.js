@@ -23,6 +23,14 @@ adminRouter.post('/login',(adminController.adminLogin))
 .get('/products/:id',(adminController.adminProductById))
 .put('/products',(adminController.updateProduct))
 .delete('/products',(adminController.deleteProduct))
+
+//admin CRUD category
+
+.post('/category/create',(adminController.createCategory))
+.get('/category',(adminController.getAllCategory))
+.put('/category/:id',(adminController.updateCategory))
+.delete('/category/:id',(adminController.deleteCategory))
+
 .use(verifyToken)
 
 //admin payment status and orderlist-------

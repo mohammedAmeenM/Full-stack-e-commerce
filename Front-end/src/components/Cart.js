@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Axios, UserLogin } from "../App";
+import React, { useEffect, useState } from "react";
+import { Axios} from "../App";
 import {
   Button,
   Card,
@@ -15,36 +15,39 @@ const userId=localStorage.getItem("userId")
 
 const Cart = () => {
   const[cart,setCart]=useState([])
+  const [price,setPrice]=useState(0)
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    const fetchCart=async()=>{
-      try {
-        const response=await Axios.get(`api/users/${userId}/cart`)
-        console.log(response.data.data);
-        setCart(response.data.data)
-      } catch (error) {
-        console.log("error fetching the product", error);
-        toast.error("error");
-      }
+  const fetchCart=async()=>{
+    try {
+      const response=await Axios.get(`api/users/${userId}/cart`)
+      console.log(response.data.data);
+      setCart(response.data.data)
+    } catch (error) {
+      console.log("error fetching the product", error);
+      toast.error("error");
     }
+  }
+  useEffect(()=>{
     fetchCart()
   },[])
 
-  const increaseQuantity = (Id) => {
-    const updatedCart = cart.map((item) => {
-      if (item.Id === Id && item.Qty < item.Stock) {
-        return { ...item, Qty: item.Qty + 1 };
-      }
-      return item;
-    });
-    setCart(updatedCart);
+  const increaseQuantity = async (id, quantityChange) => {
+    try {
+      const response = await Axios.put(`/api/users/${userId}/cart`, { id, quantityChange });
+      console.log( response.data.data);
+      // setCart(cartData.cart);
+      // setPrice(cartData.price);
+    } catch (error) {
+      console.error("Error increasing quantity:", error);
+      toast.error("Error increasing quantity");
+    }
   };
 
   const decreaseQuantity = (Id) => {
     const updatedCart = cart.map((item) => {
-      if (item.Id === Id && item.Qty > 1) {
-        return { ...item, Qty: item.Qty - 1 };
+      if (item._id === Id && item.qty > 1) {
+        return { ...item, qty: item.qty - 1 };
       }
       return item;
     });
@@ -54,29 +57,17 @@ const Cart = () => {
 
 
   const totalCartItem = (item) => {
-    return item.price * item.Qty;
+    return item.price * item.qty;
   };
 
-  // const buyProduct = (Id) => {
-  //   const productToBuy = cart.find((item) => item.Id === Id);
-  //   if (productToBuy) {
-  //     const updatedCart = cart.filter((item) => item.Id !== Id);
-  //     setBuy([...buy, productToBuy]);
-  //     setCart(updatedCart);
-  //     toast.success("Successfully bought the product");
-  //   }
-  // };
-  // const AllProduct = () => {
-  //   setBuy([...buy, ...cart]);
-  //   setCart([]);
-  // };
+
 
   const clearCart = () => {
     setCart([]);
   };
 
   const totalCartPrice = cart.reduce(
-    (total, item) => total + item.Price * item.Qty,
+    (total, item) => total + item.price * item.qty,
     0
   );
 
@@ -114,11 +105,11 @@ const Cart = () => {
                     {item.title}
                   </CardTitle>
                   <h6 style={{ textAlign: "center" }}>Price: {item.price}</h6>
-                  <p style={{ textAlign: "center" }}>Qty: {item.Qty}</p>
+                  <p style={{ textAlign: "center" }}>Qty: {item.qty}</p>
                   <div style={{ textAlign: "center" }}>
-                    <Button onClick={() => increaseQuantity(item.Id)}>+</Button>
+                    <Button onClick={() => increaseQuantity(item._id, 1)}>+</Button>
                     <Button
-                      onClick={() => decreaseQuantity(item.Id)}
+                      onClick={() => decreaseQuantity(item._id)}
                       className="m-1"
                     >
                       -

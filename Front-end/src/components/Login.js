@@ -29,6 +29,10 @@ const Login = () => {
       if(response.status===200){
       localStorage.setItem("user_Token",response.data.token)
       localStorage.setItem("userId",response.data.data.user._id)
+      setTimeout(() => {
+        localStorage.removeItem("user_Token")
+        localStorage.removeItem("userId")
+      }, 3600000);
       console.log(response.data.token);
       toast.success('success');
       navigate('/');

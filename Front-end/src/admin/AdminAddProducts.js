@@ -12,6 +12,7 @@ const AdminAddProducts = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [category, setCategory] = useState("");
+  const [stock,setStock]=useState('')
 
  const handleImageChange = (img) => {
     const selectedImage = img.target.files[0];
@@ -23,7 +24,7 @@ const AdminAddProducts = () => {
  const handileAdd=async(e)=>{
   e.preventDefault();
 
-  if (!title || !description|| !price ||!image || !category  ) {
+  if (!title || !description|| !price ||!image || !category || !stock ) {
     toast.error("Please fill in all fields");
     return;
   }
@@ -33,6 +34,7 @@ const AdminAddProducts = () => {
   formData.append("price",price);
   formData.append("image",image);
   formData.append("category",category)
+  formData.append("stock",stock)
 
   try {
     const response= await axios.post("http://localhost:5000/api/admin/products",formData)
@@ -102,17 +104,7 @@ const AdminAddProducts = () => {
                 required
               />
             </Form.Group>
-            {/* <Form.Group>
-              <Form.Label>Add Stock:</Form.Label>
-              <Form.Control
-                type="text"
-                name="Stock"
-                placeholder="Stock"
-                value={newProduct.Stock}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>{" "} */}
+           
             <br />
             <Form.Group>
               <Form.Label>Select category:</Form.Label> <br />
@@ -125,6 +117,17 @@ const AdminAddProducts = () => {
                 <option value="CAT">CAT</option>
               </select>
             </Form.Group>
+            <Form.Group>
+              <Form.Label>Add Stock:</Form.Label>
+              <Form.Control
+                type="text"
+                name="Stock"
+                placeholder="Stock"
+                
+                onChange={(e)=>setStock(e.target.value)}
+                required
+              />
+            </Form.Group>{" "}
             <Button
               className="mt-3"
               type="submit"

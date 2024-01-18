@@ -202,6 +202,48 @@ const addToCart=asyncErrorHandler(async(req,res)=>{
         })
   })
 
+
+  const updateCartItemQuantity = asyncErrorHandler(async (req, res) => {
+    const userId = req.params.id;
+    const { id, quantityChange } = req.body;
+  
+    const user = await userSchema.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+  
+    // Find the index of the cart item with the given id
+    const cartItemIndex = user.cart.findIndex((item) => item._id.toString() === id);
+  
+    if (cartItemIndex === -1) {
+      return res.status(404).json({ message: "Cart item not found" });
+    }
+  
+    // Update the quantity
+    user.cart[cartItemIndex].qty += quantityChange;
+  
+    // Recalculate the total price
+    let totalCartPrice = 0;
+    user.cart.forEach((item) => {
+      totalCartPrice += item.price * item.qty;
+    });
+  
+    if (user.cart[cartItemIndex].qty > 0) {
+      await user.save();
+    }
+  
+    res.status(200).json({
+      status: "success",
+      message: "Cart item quantity updated",
+      data: {
+        cart: user.cart,
+        totalCartPrice: totalCartPrice,
+      },
+    });
+  });
+
   const addToWishList=asyncErrorHandler(async(req,res)=>{
     const userId=req.params.id;
     if(!userId){
@@ -405,5 +447,5 @@ let sValue={};
 
 module.exports = {
     createUser,userLogin,userViewProduct,productById,productListCategory,addToCart,viewCartProducts,addToWishList,
-    viewWishlist,deleteWishlist,paymentSession,successPayment,orderDetails
+    viewWishlist,deleteWishlist,paymentSession,successPayment,orderDetails,updateCartItemQuantity
 }

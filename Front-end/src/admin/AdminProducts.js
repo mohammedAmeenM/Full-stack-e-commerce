@@ -59,7 +59,7 @@ const AdminProducts = () => {
               <th>Image</th>
               <th>Name</th>
 
-              <th>Price</th>
+              
               <th>Actual Price</th>
               <th>Animal</th>
               <th>Stock</th>
@@ -76,10 +76,10 @@ const AdminProducts = () => {
                   />
                 </td>
                 <td>{item.title}</td>
-                <td>###</td>
+                
                 <td>{item.price}</td>
                 <td>{item.category}</td>
-                <td>$$$</td>
+                <td>{item.stock}</td>
                 <td style={{ textAlign: "center" }}>
                   <Button
                     style={{ marginRight: "30px" }}
