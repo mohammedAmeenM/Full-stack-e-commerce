@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { UserLogin } from "../App";
+import React, { useContext, useEffect, useState } from "react";
+import { Axios, UserLogin } from "../App";
 import {
   Button,
   Card,
@@ -11,10 +11,25 @@ import {
 import Navigationbar from "./Navigationbar";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+const userId=localStorage.getItem("userId")
 
 const Cart = () => {
-  const { cart, setCart, buy, setBuy } = useContext(UserLogin);
+  const[cart,setCart]=useState([])
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const fetchCart=async()=>{
+      try {
+        const response=await Axios.get(`api/users/${userId}/cart`)
+        console.log(response.data.data);
+        setCart(response.data.data)
+      } catch (error) {
+        console.log("error fetching the product", error);
+        toast.error("error");
+      }
+    }
+    fetchCart()
+  },[])
 
   const increaseQuantity = (Id) => {
     const updatedCart = cart.map((item) => {
@@ -36,28 +51,25 @@ const Cart = () => {
     setCart(updatedCart);
   };
 
-  const removeItem = (Id) => {
-    const updatedCart = cart.filter((item) => item.Id !== Id);
-    setCart(updatedCart);
-  };
+
 
   const totalCartItem = (item) => {
-    return item.Price * item.Qty;
+    return item.price * item.Qty;
   };
 
-  const buyProduct = (Id) => {
-    const productToBuy = cart.find((item) => item.Id === Id);
-    if (productToBuy) {
-      const updatedCart = cart.filter((item) => item.Id !== Id);
-      setBuy([...buy, productToBuy]);
-      setCart(updatedCart);
-      toast.success("Successfully bought the product");
-    }
-  };
-  const AllProduct = () => {
-    setBuy([...buy, ...cart]);
-    setCart([]);
-  };
+  // const buyProduct = (Id) => {
+  //   const productToBuy = cart.find((item) => item.Id === Id);
+  //   if (productToBuy) {
+  //     const updatedCart = cart.filter((item) => item.Id !== Id);
+  //     setBuy([...buy, productToBuy]);
+  //     setCart(updatedCart);
+  //     toast.success("Successfully bought the product");
+  //   }
+  // };
+  // const AllProduct = () => {
+  //   setBuy([...buy, ...cart]);
+  //   setCart([]);
+  // };
 
   const clearCart = () => {
     setCart([]);
@@ -77,14 +89,14 @@ const Cart = () => {
         <div className="d-flex align-items-center justify-content-center flex-wrap">
           {cart.map((item) => (
             <div
-              key={item.Id}
+              key={item._id}
               className="d-flex align-items-center justify-content-center flex-wrap"
             >
               <Card
                 className="shadow p-1 m-2 bg-body-tertiary rounded"
                 style={{
-                  width: "18rem",
-                  height: "31rem",
+                  width: "16rem",
+                  height: "29rem",
                   alignItems: "center",
                   display: "flex",
                   flexDirection: "column",
@@ -93,15 +105,15 @@ const Cart = () => {
               >
                 <CardBody>
                   <CardImg
-                    style={{ height: "15rem" }}
+                    style={{ height: "11rem" }}
                     className="p-2"
                     variant="top"
-                    src={item.Image}
+                    src={item.image}
                   />
                   <CardTitle style={{ textAlign: "center" }}>
-                    {item.ProductName}
+                    {item.title}
                   </CardTitle>
-                  <h6 style={{ textAlign: "center" }}>Price: {item.Price}</h6>
+                  <h6 style={{ textAlign: "center" }}>Price: {item.price}</h6>
                   <p style={{ textAlign: "center" }}>Qty: {item.Qty}</p>
                   <div style={{ textAlign: "center" }}>
                     <Button onClick={() => increaseQuantity(item.Id)}>+</Button>
@@ -111,11 +123,12 @@ const Cart = () => {
                     >
                       -
                     </Button>
-                    <h6>Total: ₹{totalCartItem(item)}</h6>
+                    
+                     <h6>Total: ₹ {totalCartItem(item)}</h6>
                   </div>
                   <div>
                     <Button
-                      onClick={() => buyProduct(item.Id)}
+                      // onClick={() => buyProduct(item.Id)}
                       variant="outline-dark"
                     >
                       Buy Product
@@ -123,7 +136,7 @@ const Cart = () => {
                     <Button
                       className="m-2"
                       variant="outline-dark"
-                      onClick={() => removeItem(item.Id)}
+                      // onClick={() => removeItem(item.Id)}
                     >
                       Remove
                     </Button>
@@ -135,11 +148,14 @@ const Cart = () => {
         </div>
         <div className=" p-5 " style={{ background: "rgb(230, 230, 219)" }}>
           <h2 className="pb-4" style={{ textAlign: "center" }}>
-            Total Price: {totalCartPrice}
+            Total Price:{totalCartPrice}
           </h2>
+          
           <div style={{ textAlign: "center" }}>
             <Button onClick={() => navigate("/")}>Back To Home</Button>
-            <Button className="m-2" onClick={AllProduct}>
+            <Button className="m-2" 
+            // onClick={AllProduct}
+            >
               Buy All Product
             </Button>
             <Button onClick={clearCart} className="m-2">

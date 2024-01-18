@@ -25,11 +25,14 @@ const Login = () => {
         "password":newPasswordRef
       };
       const response= await axios.post("http://localhost:5000/api/users/login",data)
-      console.log(response);
+      console.log(response.data.data.user._id);
+      if(response.status===200){
       localStorage.setItem("user_Token",response.data.token)
+      localStorage.setItem("userId",response.data.data.user._id)
       console.log(response.data.token);
       toast.success('success');
       navigate('/');
+      }
 
     } catch (error) {
       console.error(error)

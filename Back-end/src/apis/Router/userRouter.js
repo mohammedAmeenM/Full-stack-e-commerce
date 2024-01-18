@@ -8,17 +8,17 @@ const verifyToken=require('../middlewares/userAuth')
 userRouter.post('/register',(userController.createUser))
 .post('/login',(userController.userLogin))
 
-
+//user get products-----------------
 
 .get('/products',(userController.userViewProduct))
-.get('/products/:id',(userController.productById))
 .get('/products/category/:categoryname',(userController.productListCategory))
-
 //Token Verify--------------------
 
 .use(verifyToken)
+.get('/products/:id',(userController.productById))
 
-//user get products-----------------
+
+
 
 //user product add to cart----and view cart------------------
 

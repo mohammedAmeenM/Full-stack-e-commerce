@@ -23,13 +23,14 @@ import axios from "axios";
 
 
  export const Axios=axios.create({
-  baseURL:process.env.REACT_APP_BASE_URL,
+  baseURL:process.env.REACT_APP_BASE_URL|| "http://localhost:5000",
   headers:{
     "Content-Type":"application/json",
     Authorization:localStorage.getItem("user_Token")
   }
+
  })
- 
+ console.log(localStorage.getItem("user_Token"));
  console.log(process.env.REACT_APP_BASE_URL);
 
 

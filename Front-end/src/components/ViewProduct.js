@@ -8,21 +8,22 @@ import {
   CardTitle,
   Container,
 } from "react-bootstrap";
-import { UserLogin } from "../App";
+import { Axios, UserLogin } from "../App";
 import Navigationbar from "./Navigationbar"; 
 import { toast } from "react-toastify";
-import axios from "axios";
 
 const ViewProduct = () => {
   const navigate = useNavigate();
   const {  cart, setCart} = useContext(UserLogin);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const userId=localStorage.getItem("userId")
+  console.log(userId);
 
   useEffect(() => {
     const viewProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/products/${id}`)
+        const response = await Axios.get(`api/users/products/${id}`)
         setProduct(response.data.product);
       } catch (error) {
         console.log("error fetching the product", error);
@@ -32,6 +33,20 @@ const ViewProduct = () => {
     viewProduct();
   }, [id]);
 
+  const handleAddToCart=async()=>{
+    try {
+      const response=await Axios.post(`api/users/${userId}/cart`,{productId:id})
+      console.log(response);
+      if (response){
+          await Axios.get(`/api/users/${userId}/cart`) 
+          return toast.success("Product added to the cart!")
+      }
+      
+    } catch (error) {
+      console.error('Error adding product to the cart:', error)
+      toast.error(error.response.data.message)
+    }
+  }
   return (
     <div style={{ background: "rgb(230, 230, 219)" }}>
       <Navigationbar />
@@ -68,7 +83,7 @@ const ViewProduct = () => {
                 <p style={{ textAlign: "center" }}>Animal : {product.category}</p>
               </CardBody>
               <div>
-                {cart.find((cartItem) => cartItem.Id === product[0].Id) ? (
+                {/* {cart.find((cartItem) => cartItem === product[0]._id) ? (
                   <Button
                     variant="outline-dark"
                     onClick={() => navigate("/cart")}
@@ -76,10 +91,10 @@ const ViewProduct = () => {
                     Go To Cart
                   </Button>
                 ) : (
-                  <Button variant="outline-dark">
+                    )} */}
+                  <Button onClick={handleAddToCart} variant="outline-dark">
                     Add To Cart
                   </Button>
-                )}
               </div>
             </Card>
           </div>

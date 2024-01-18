@@ -12,6 +12,7 @@ import { UserLogin } from "../App";
 import { CiLogout } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { NavDropdown } from "react-bootstrap";
+import Login from "./Login";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const Navigationbar = () => {
               <HiShoppingCart />
             </Nav.Link>
 
-            {login ? (
+            { Login? (
                <NavDropdown  style={{ fontSize: "27px" }} title={<CiLogout onClick={Logout} />} id="basic-nav-dropdown">
                <NavDropdown.Item href="#action/3.1">{user.email}</NavDropdown.Item>
                
