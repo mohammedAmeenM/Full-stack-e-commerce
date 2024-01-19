@@ -32,17 +32,7 @@ const Cart = () => {
     fetchCart()
   },[])
 
-  const increaseQuantity = async (id, quantityChange) => {
-    try {
-      const response = await Axios.put(`/api/users/${userId}/cart`, { id, quantityChange });
-      console.log( response.data.data);
-      // setCart(cartData.cart);
-      // setPrice(cartData.price);
-    } catch (error) {
-      console.error("Error increasing quantity:", error);
-      toast.error("Error increasing quantity");
-    }
-  };
+  
 
   const decreaseQuantity = (Id) => {
     const updatedCart = cart.map((item) => {
@@ -107,7 +97,7 @@ const Cart = () => {
                   <h6 style={{ textAlign: "center" }}>Price: {item.price}</h6>
                   <p style={{ textAlign: "center" }}>Qty: {item.qty}</p>
                   <div style={{ textAlign: "center" }}>
-                    <Button onClick={() => increaseQuantity(item._id, 1)}>+</Button>
+                    <Button >+</Button>
                     <Button
                       onClick={() => decreaseQuantity(item._id)}
                       className="m-1"
