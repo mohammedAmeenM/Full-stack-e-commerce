@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { HiShoppingCart } from "react-icons/hi2";
 import { RiAdminFill } from "react-icons/ri";
 import { CiLogin } from "react-icons/ci";
-
+import { FaHeart } from "react-icons/fa";
 import { UserLogin } from "../App";
 import { CiLogout } from "react-icons/ci";
 import { toast } from "react-toastify";
@@ -76,6 +76,14 @@ const Navigationbar = () => {
             >
                
               <HiShoppingCart />
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => navigate("/wishlist")}
+              style={{ fontSize: "25px" }}
+              title="wishlist"
+            >
+               
+               <FaHeart />
             </Nav.Link>
 
             { Login? (

@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserLogin } from "../App";
+import { Axios, UserLogin } from "../App";
 import {
   Button,
   Card,
   CardBody,
   CardImg,
+  CardSubtitle,
   CardTitle,
   Container,
   Form,
 } from "react-bootstrap";
 import Navigationbar from "./Navigationbar";
+import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+const userId=localStorage.getItem('userId')
 
 const Collection = () => {
   const navigate = useNavigate();
@@ -32,6 +35,7 @@ const Collection = () => {
     allProducts()
     
   }, [])
+
   const Searches=products.filter((srch)=>{
     if(search===''){
       return srch;
@@ -41,6 +45,16 @@ const Collection = () => {
       return ''
     }
    } )
+   const addToWishList=async(id)=>{
+    try {
+      await Axios.post(`api/users/${userId}/wishlist`,{productId:id})
+      return toast.success("Product added to the wishlist!")
+   
+    } catch (error) {
+      console.error('Error adding product to the whislist:', error)
+      toast.error(error.response.data.message)
+    }
+  }
 
   return (
     <div style={{ background: "rgb(230, 230, 219)" }}>
@@ -67,43 +81,48 @@ const Collection = () => {
         <div className="d-flex align-items-center justify-content-center flex-wrap">
           {Searches.map((item) => (
             <div
-              key={item.Id}
+              key={item._id}
               className="d-flex align-items-center justify-content-center flex-wrap"
             >
               <Card
                 className="shadow p-3 m-2 bg-body-tertiary rounded"
                 style={{
-                  width: "15rem",
-                  height: "25rem",
+                  width: "12rem",
+                  height: "22rem",
                   alignItems: "center",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                 }}
               >
+                <CardSubtitle title="wishlist" style={{display:'flex',marginLeft:'-150px',fontSize:'22px'}} onClick={()=>addToWishList(item._id)}><    FaHeart /></CardSubtitle>
                 <CardBody>
                   <CardImg
-                    style={{ height: "12rem" }}
+                    style={{ height: "9rem", width:'8rem',textAlign:'center'}}
                     className="p-2"
                     variant="top"
+                    onClick={() => navigate(`/viewproduct/${item._id}`)}  
                     src={item.image}
                   />
                   <br />
-                  <br />
+                  
                   <CardTitle style={{ textAlign: "center" }}>
                     {item.title}
                   </CardTitle>
                   <br />
-                  <h6 style={{ textAlign: "center" }}>Price:{item.price}</h6>
-                </CardBody>
-                <div>
+                  <h6 style={{ textAlign: "center" }}>Price:{item.price}</h6><br />
+                  <CardTitle style={{ textAlign: "center" }}>
+
                   <Button
                     onClick={() => navigate(`/viewproduct/${item._id}`)}
                     variant="outline-dark"
-                  >
+                    >
                     View Product
                   </Button>
-                </div>
+                    </CardTitle>
+                </CardBody>
+                
+                
               </Card>
             </div>
           ))}

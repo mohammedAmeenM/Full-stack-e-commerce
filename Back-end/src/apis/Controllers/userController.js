@@ -201,7 +201,19 @@ const addToCart=asyncErrorHandler(async(req,res)=>{
             data:cartProducts
         })
   })
-
+  const deleteCartproducts=asyncErrorHandler(async(req,res)=>{
+    const userId=req.params.id;
+    const {productId}=req.body;
+    if(!productId){
+        return res.status(404).json({status:'fail',message:'product not found'})
+    }
+    const user=await userSchema.findById(userId);
+    if(!user){
+        return res.status(404).json({status:'fail',message:'user not found'})
+    }
+    await userSchema.updateOne({_id:userId},{$pull:{cart:productId}})
+    res.status(200).json({status:'success',message:'successfully remove product'})
+  })
 
 
   const addToWishList=asyncErrorHandler(async(req,res)=>{
@@ -406,6 +418,6 @@ let sValue={};
   })
 
 module.exports = {
-    createUser,userLogin,userViewProduct,productById,productListCategory,addToCart,viewCartProducts,addToWishList,
+    createUser,userLogin,userViewProduct,productById,productListCategory,addToCart,viewCartProducts,deleteCartproducts,addToWishList,
     viewWishlist,deleteWishlist,paymentSession,successPayment,orderDetails
 }

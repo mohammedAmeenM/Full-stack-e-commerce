@@ -5,12 +5,16 @@ import {
   Card,
   CardBody,
   CardImg,
+  CardSubtitle,
   CardTitle,
   Container,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { FaHeart } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Axios } from "../App";
+const userId=localStorage.getItem('userId')
 
 const Cat = () => {
   const navigate = useNavigate();
@@ -30,6 +34,16 @@ const Cat = () => {
     }
     catProducts()
   },[])
+  const addToWishList=async(id)=>{
+    try {
+      await Axios.post(`api/users/${userId}/wishlist`,{productId:id})
+      return toast.success("Product added to the wishlist!")
+   
+    } catch (error) {
+      console.error('Error adding product to the whislist:', error)
+      toast.error(error.response.data.message)
+    }
+  }
   
   
   return (
@@ -48,37 +62,41 @@ const Cat = () => {
               <Card
                 className="shadow p-3 m-2 bg-body-tertiary rounded"
                 style={{
-                  width: "15rem",
-                  height: "25rem",
+                  width: "12rem",
+                  height: "22rem",
                   alignItems: "center",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                 }}
               >
+                <CardSubtitle title="wishlist" style={{display:'flex',marginLeft:'-150px',fontSize:'22px'}} onClick={()=>addToWishList(item._id)}><    FaHeart /></CardSubtitle>
+
                 <CardBody>
                   <CardImg
-                    style={{ height: "11rem" }}
+                    style={{ height: "9rem", width:'8rem',textAlign:'center'}}
                     className="p-2"
                     variant="top"
+                    onClick={() => navigate(`/viewproduct/${item._id}`)}
                     src={item.image}
                   />
                   <br />
-                  <br />
+                
                   <CardTitle style={{ textAlign: "center" }}>
                     {item.title}
                   </CardTitle>
                   <br />
-                  <h6 style={{ textAlign: "center" }}>Price:{item.price}</h6>
-                </CardBody>
-                <div>
+                  <h6 style={{ textAlign: "center" }}>Price:{item.price}</h6><br />
+                  <CardTitle style={{ textAlign: "center" }}>
                   <Button
                     onClick={() => navigate(`/viewproduct/${item._id}`)}
                     variant="outline-dark"
-                  >
+                    >
                     View Product
                   </Button>
-                </div>
+                    </CardTitle>
+                </CardBody>
+                
               </Card>
             </div>
           ))}

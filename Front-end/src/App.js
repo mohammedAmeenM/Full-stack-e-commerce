@@ -19,6 +19,7 @@ import AdminAddProducts from "./admin/AdminAddProducts";
 import EditProduct from "./admin/EditProduct";
 import ViewOrder from "./admin/ViewOrder";
 import axios from "axios";
+import Wishlist from "./components/Wishlist";
 
 
 
@@ -72,6 +73,7 @@ function App() {
           <Route path="/dog" element={<Dog />} />
           <Route path="/cat" element={<Cat />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/viewproduct/:id" element={<ViewProduct />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/adminpage" element={<AdminMainPage />} />

@@ -32,6 +32,20 @@ const Cart = () => {
     fetchCart()
   },[])
 
+  const RemoveCartItem=async(id)=>{
+    try {
+      const productId=id;
+      const response=await Axios.delete(`api/users/${userId}/cart`,{
+        data: { productId: productId }  
+      })
+      fetchCart()
+      console.log(response);
+    } catch (error) {
+      console.log("error fetching the product", error);
+      toast.error("error");
+    }
+  }
+
   
 
   const decreaseQuantity = (Id) => {
@@ -77,7 +91,7 @@ const Cart = () => {
                 className="shadow p-1 m-2 bg-body-tertiary rounded"
                 style={{
                   width: "16rem",
-                  height: "29rem",
+                  height: "26rem",
                   alignItems: "center",
                   display: "flex",
                   flexDirection: "column",
@@ -86,7 +100,8 @@ const Cart = () => {
               >
                 <CardBody>
                   <CardImg
-                    style={{ height: "11rem" }}
+                  
+                    style={{ height: "10.5rem" ,textAlign: "center" }}
                     className="p-2"
                     variant="top"
                     src={item.image}
@@ -117,7 +132,7 @@ const Cart = () => {
                     <Button
                       className="m-2"
                       variant="outline-dark"
-                      // onClick={() => removeItem(item.Id)}
+                      onClick={() => RemoveCartItem(item._id)}
                     >
                       Remove
                     </Button>
@@ -134,14 +149,14 @@ const Cart = () => {
           
           <div style={{ textAlign: "center" }}>
             <Button onClick={() => navigate("/")}>Back To Home</Button>
-            <Button className="m-2" 
+            <Button className="m-3" 
             // onClick={AllProduct}
             >
               Buy All Product
             </Button>
-            <Button onClick={clearCart} className="m-2">
+            {/* <Button onClick={clearCart} className="m-2">
               Clear Cart
-            </Button>
+            </Button> */}
           </div>
         </div>
       </Container>

@@ -5,12 +5,14 @@ import {
   Card,
   CardBody,
   CardImg,
+  CardSubtitle,
   CardTitle,
   Container,
 } from "react-bootstrap";
 import { Axios, UserLogin } from "../App";
 import Navigationbar from "./Navigationbar"; 
 import { toast } from "react-toastify";
+
 
 const ViewProduct = () => {
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const ViewProduct = () => {
       toast.error(error.response.data.message)
     }
   }
+ 
   return (
     <div style={{ background: "rgb(230, 230, 219)" }}>
       <Navigationbar />
@@ -57,8 +60,8 @@ const ViewProduct = () => {
             <Card
               className="shadow p-1 m-2 bg-body-tertiary rounded"
               style={{
-                width: "18rem",
-                height: "28rem",
+                width: "14rem",
+                height: "23rem",
                 alignItems: "center",
                 display: "flex",
                 flexDirection: "column",
@@ -66,8 +69,9 @@ const ViewProduct = () => {
               }}
             >
               <CardBody>
+                
                 <CardImg
-                  style={{ height: "15rem" }}
+                  style={{ height: "11rem" }}
                   className="p-2"
                   variant="top"
                   src={product.image}
@@ -81,8 +85,13 @@ const ViewProduct = () => {
                   Offer Price : {product.price}
                 </h6>
                 <p style={{ textAlign: "center" }}>Animal : {product.category}</p>
+                <CardTitle style={{ textAlign: "center" }}>
+                <Button onClick={handleAddToCart} variant="outline-dark">
+                    Add To Cart
+                  </Button>
+                </CardTitle>
               </CardBody>
-              <div>
+             
                 {/* {cart.find((cartItem) => cartItem === product[0]._id) ? (
                   <Button
                     variant="outline-dark"
@@ -92,11 +101,10 @@ const ViewProduct = () => {
                   </Button>
                 ) : (
                     )} */}
-                  <Button onClick={handleAddToCart} variant="outline-dark">
-                    Add To Cart
-                  </Button>
-              </div>
+                  
+             
             </Card>
+            <div style={{color:'rgb(230, 230, 219)'}}>aaa</div>
           </div>
         )}
       </Container>

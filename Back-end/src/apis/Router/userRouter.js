@@ -25,7 +25,7 @@ userRouter.post('/register',(userController.createUser))
 
 .post('/:id/cart',(userController.addToCart))
 .get ('/:id/cart',(userController.viewCartProducts))
-
+.delete('/:id/cart',(userController.deleteCartproducts))
 
 //user product add to wishlist---- view wishlist------and delete------------
 
