@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { AXIOS } from "../App";
 
 const EditProduct = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const EditProduct = () => {
    useEffect(()=>{
       const fetchProduct=async()=>{
         try {
-           const response=await axios.get(`http://localhost:5000/api/admin/products/${id}`)
+           const response=await AXIOS.get(`api/admin/products/${id}`)
            console.log(response.data.product);
            const { _id, title, image, price, description, category } = response.data.product;
            setProduct({ 
@@ -44,7 +45,7 @@ const EditProduct = () => {
   const submit = async(e) => {
     e.preventDefault();
     try {
-      const response=await axios.put("http://localhost:5000/api/admin/products",product)
+      const response=await AXIOS.put("api/admin/products",product)
       console.log(response);
       if (response.status === 201) {
         toast.success("Product Edited Successfully");

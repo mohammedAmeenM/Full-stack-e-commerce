@@ -4,6 +4,7 @@ import { Button, Container, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { AXIOS } from "../App";
 
 const AdminProducts = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const AdminProducts = () => {
 
   async function allProducts (){
     try {
-        const response=await axios.get("http://localhost:5000/api/admin/products")
+        const response=await AXIOS.get("api/admin/products")
         console.log(response.data.products);
         setProduct(response.data.products)
       } catch (error) {
@@ -27,7 +28,7 @@ const AdminProducts = () => {
     try {
      const productId=id;
      console.log(productId  )
-     const response = await axios.delete("http://localhost:5000/api/admin/products", {
+     const response = await AXIOS.delete("api/admin/products", {
       data: { productId: productId }  
     })
     allProducts()

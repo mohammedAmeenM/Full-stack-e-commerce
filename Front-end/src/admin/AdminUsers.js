@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import SideBar from "./SideBar";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { AXIOS } from "../App";
 
 const AdminUsers = () => {
   const [user,setUser]=useState([]);
   useEffect(()=>{
     const allUsers=async()=>{
       try {
-        const response=await axios.get("http://localhost:5000/api/admin/users")
+        const response=await AXIOS.get("api/admin/users")
         console.log(response.data.data);
         setUser(response.data.data)
       } catch (error) {

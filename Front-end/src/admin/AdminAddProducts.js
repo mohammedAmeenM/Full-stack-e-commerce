@@ -4,6 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AXIOS } from "../App";
 
 const AdminAddProducts = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const AdminAddProducts = () => {
   formData.append("stock",stock)
 
   try {
-    const response= await axios.post("http://localhost:5000/api/admin/products",formData)
+    const response= await AXIOS.post("api/admin/products",formData)
     console.log(response);
     if(response.status===201){
       toast.success("Product added successfully!");

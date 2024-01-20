@@ -81,7 +81,7 @@ const userLogin = asyncErrorHandler( async (req, res) => {
 });
 
 const userViewProduct=asyncErrorHandler (async (req,res)=>{
-    console.log('aaaa');
+  
     const product=await productSchema.find();
     if(!product){
        return res.status(404).json({
@@ -322,7 +322,7 @@ let sValue={};
         payment_method_types:['card'],
         line_items:lineItems,
         mode:'payment',
-        success_url: `http://localhost:6000/api/users/payment/success`, 
+        success_url: `http://localhost:3000/api/users/payment/success`, 
         cancel_url: "http://localhost:3000/api/users/payment/cancel",
     })
     if(!session){
@@ -364,7 +364,7 @@ let sValue={};
       const orderId = orders._id;
   
       const userUpdate = await userSchema.updateOne(
-        { _id: userId },
+        { _id: userId },   
         {
           $push: { orders: orderId },
           $set: { cart: [] },
@@ -409,6 +409,7 @@ let sValue={};
       });
   }
   const ordersWithProducts = await Order.find({ _id: { $in: orderProduts } }).populate("products").exec();
+  
 
   res.status(200).json({
       message: 'Ordered Products Details Found',

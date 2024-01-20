@@ -40,8 +40,10 @@ const Dog = () => {
   }, []);
   const addToWishList=async(id)=>{
     try {
-      await Axios.post(`api/users/${userId}/wishlist`,{productId:id})
-      return toast.success("Product added to the wishlist!")
+     const response= await Axios.post(`api/users/${userId}/wishlist`,{productId:id})
+      if (response.status === 200) {
+        return toast.success("Product added to the wishlist!");
+      }
    
     } catch (error) {
       console.error('Error adding product to the whislist:', error)

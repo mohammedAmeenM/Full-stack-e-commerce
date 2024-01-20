@@ -20,14 +20,23 @@ import EditProduct from "./admin/EditProduct";
 import ViewOrder from "./admin/ViewOrder";
 import axios from "axios";
 import Wishlist from "./components/Wishlist";
+import Succes from "./components/Succes";
 
 
 
  export const Axios=axios.create({
-  baseURL:process.env.REACT_APP_BASE_URL|| "http://localhost:5000",
+  baseURL:process.env.REACT_APP_BASE_URL|| "http://localhost:5000/",
   headers:{
     "Content-Type":"application/json",
     Authorization:localStorage.getItem("user_Token")
+  }
+
+ })
+ export const AXIOS=axios.create({
+  baseURL:process.env.REACT_APP_BASE_URL|| "http://localhost:5000/",
+  headers:{
+    "Content-Type":"application/json",
+    Authorization:localStorage.getItem("admin_Token")
   }
 
  })
@@ -82,6 +91,7 @@ function App() {
           <Route path="/addproduct" element={<AdminAddProducts />} />
           <Route path="/editproduct/:id" element={<EditProduct />} />
           <Route path="/vieworder" element={<ViewOrder />} />
+          <Route path="/api/users/payment/success" element={<Succes />} />
         </Routes>
       </UserLogin.Provider>
       <ToastContainer />

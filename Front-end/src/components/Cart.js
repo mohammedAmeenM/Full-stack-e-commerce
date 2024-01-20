@@ -45,7 +45,16 @@ const Cart = () => {
       toast.error("error");
     }
   }
-
+const buyProduct=async()=>{
+    try {
+      const response=await Axios.post(`api/users/${userId}/payment`)
+      console.log(response.data.url);
+      window.location.href=response.data.url
+    } catch (error) {
+      toast.error(error)
+      console.log(error);
+    }
+}
   
 
   const decreaseQuantity = (Id) => {
@@ -123,12 +132,7 @@ const Cart = () => {
                      <h6>Total: ₹ {totalCartItem(item)}</h6>
                   </div>
                   <div>
-                    <Button
-                      // onClick={() => buyProduct(item.Id)}
-                      variant="outline-dark"
-                    >
-                      Buy Product
-                    </Button>
+                   
                     <Button
                       className="m-2"
                       variant="outline-dark"
@@ -150,7 +154,7 @@ const Cart = () => {
           <div style={{ textAlign: "center" }}>
             <Button onClick={() => navigate("/")}>Back To Home</Button>
             <Button className="m-3" 
-            // onClick={AllProduct}
+            onClick={buyProduct}
             >
               Buy All Product
             </Button>

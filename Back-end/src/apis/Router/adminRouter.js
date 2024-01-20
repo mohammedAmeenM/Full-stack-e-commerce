@@ -10,6 +10,7 @@ adminRouter.post('/login',(adminController.adminLogin))
 
 //verify token -----------
 
+.use(verifyToken)
 
 //get userss lists--------
 
@@ -31,7 +32,6 @@ adminRouter.post('/login',(adminController.adminLogin))
 .put('/category/:id',(adminController.updateCategory))
 .delete('/category/:id',(adminController.deleteCategory))
 
-.use(verifyToken)
 
 //admin payment status and orderlist-------
 
