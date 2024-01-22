@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Axios} from "../App";
+import { Axios } from "../App";
 import {
   Button,
   Card,
@@ -11,51 +11,50 @@ import {
 import Navigationbar from "./Navigationbar";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-const userId=localStorage.getItem("userId")
+const userId = localStorage.getItem("userId");
 
 const Cart = () => {
-  const[cart,setCart]=useState([])
-  const [price,setPrice]=useState(0)
+  const [cart, setCart] = useState([]);
+  const [price, setPrice] = useState(0);
   const navigate = useNavigate();
 
-  const fetchCart=async()=>{
+  const fetchCart = async () => {
     try {
-      const response=await Axios.get(`api/users/${userId}/cart`)
+      const response = await Axios.get(`api/users/${userId}/cart`);
       console.log(response.data.data);
-      setCart(response.data.data)
+      setCart(response.data.data);
     } catch (error) {
       console.log("error fetching the product", error);
       toast.error("error");
     }
-  }
-  useEffect(()=>{
-    fetchCart()
-  },[])
+  };
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
-  const RemoveCartItem=async(id)=>{
+  const RemoveCartItem = async (id) => {
     try {
-      const productId=id;
-      const response=await Axios.delete(`api/users/${userId}/cart`,{
-        data: { productId: productId }  
-      })
-      fetchCart()
+      const productId = id;
+      const response = await Axios.delete(`api/users/${userId}/cart`, {
+        data: { productId: productId },
+      });
+      fetchCart();
       console.log(response);
     } catch (error) {
       console.log("error fetching the product", error);
       toast.error("error");
     }
-  }
-const buyProduct=async()=>{
+  };
+  const buyProduct = async () => {
     try {
-      const response=await Axios.post(`api/users/${userId}/payment`)
+      const response = await Axios.post(`api/users/${userId}/payment`);
       console.log(response.data.url);
-      window.location.href=response.data.url
+      window.location.href = response.data.url;
     } catch (error) {
-      toast.error(error)
+      toast.error(error);
       console.log(error);
     }
-}
-  
+  };
 
   const decreaseQuantity = (Id) => {
     const updatedCart = cart.map((item) => {
@@ -67,13 +66,9 @@ const buyProduct=async()=>{
     setCart(updatedCart);
   };
 
-
-
   const totalCartItem = (item) => {
     return item.price * item.qty;
   };
-
-
 
   const clearCart = () => {
     setCart([]);
@@ -109,8 +104,7 @@ const buyProduct=async()=>{
               >
                 <CardBody>
                   <CardImg
-                  
-                    style={{ height: "10.5rem" ,textAlign: "center" }}
+                    style={{ height: "10.5rem", textAlign: "center" }}
                     className="p-2"
                     variant="top"
                     src={item.image}
@@ -121,18 +115,17 @@ const buyProduct=async()=>{
                   <h6 style={{ textAlign: "center" }}>Price: {item.price}</h6>
                   <p style={{ textAlign: "center" }}>Qty: {item.qty}</p>
                   <div style={{ textAlign: "center" }}>
-                    <Button >+</Button>
+                    <Button>+</Button>
                     <Button
                       onClick={() => decreaseQuantity(item._id)}
                       className="m-1"
                     >
                       -
                     </Button>
-                    
-                     <h6>Total: ₹ {totalCartItem(item)}</h6>
+
+                    <h6>Total: ₹ {totalCartItem(item)}</h6>
                   </div>
                   <div>
-                   
                     <Button
                       className="m-2"
                       variant="outline-dark"
@@ -150,12 +143,10 @@ const buyProduct=async()=>{
           <h2 className="pb-4" style={{ textAlign: "center" }}>
             Total Price:{totalCartPrice}
           </h2>
-          
+
           <div style={{ textAlign: "center" }}>
             <Button onClick={() => navigate("/")}>Back To Home</Button>
-            <Button className="m-3" 
-            onClick={buyProduct}
-            >
+            <Button className="m-3" onClick={buyProduct}>
               Buy All Product
             </Button>
             {/* <Button onClick={clearCart} className="m-2">

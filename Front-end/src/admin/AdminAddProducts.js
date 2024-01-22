@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import SideBar from "./SideBar";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -13,45 +13,45 @@ const AdminAddProducts = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [category, setCategory] = useState("");
-  const [stock,setStock]=useState('')
+  const [stock, setStock] = useState("");
 
- const handleImageChange = (img) => {
+  const handleImageChange = (img) => {
     const selectedImage = img.target.files[0];
     setImage(selectedImage);
-   }  
- const handleChangeCategory = (e) => {
-  setCategory(e.target.value);
-   };
- const handileAdd=async(e)=>{
-  e.preventDefault();
+  };
+  const handleChangeCategory = (e) => {
+    setCategory(e.target.value);
+  };
+  const handileAdd = async (e) => {
+    e.preventDefault();
 
-  if (!title || !description|| !price ||!image || !category || !stock ) {
-    toast.error("Please fill in all fields");
-    return;
-  }
-  const formData=new FormData();
-  formData.append("title",title);
-  formData.append("description",description);
-  formData.append("price",price);
-  formData.append("image",image);
-  formData.append("category",category)
-  formData.append("stock",stock)
+    if (!title || !description || !price || !image || !category || !stock) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("image", image);
+    formData.append("category", category);
+    formData.append("stock", stock);
 
-  try {
-    const response= await AXIOS.post("api/admin/products",formData)
-    console.log(response);
-    if(response.status===201){
-      toast.success("Product added successfully!");
-      navigate('/adminproduct')
-    }else{
+    try {
+      const response = await AXIOS.post("api/admin/products", formData);
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Product added successfully!");
+        navigate("/adminproduct");
+      } else {
+        toast.error("Failed to add product.");
+      }
+    } catch (error) {
+      console.error("Error uploading product:", error.message);
       toast.error("Failed to add product.");
     }
-  } catch (error) {
-    console.error("Error uploading product:", error.message);
-    toast.error("Failed to add product.");
-  }
- }
-  
+  };
+
   return (
     <div style={{ display: "flex" }}>
       <SideBar />
@@ -70,9 +70,9 @@ const AdminAddProducts = () => {
               <Form.Label>Add Product title:</Form.Label>
               <Form.Control
                 type="text"
-                id="title"  
+                id="title"
                 placeholder="product title"
-                onChange={(e)=>setTitle(e.target.value)} 
+                onChange={(e) => setTitle(e.target.value)}
                 required
               />
             </Form.Group>
@@ -82,7 +82,7 @@ const AdminAddProducts = () => {
                 type="text"
                 name="description"
                 placeholder="description"
-                onChange={(e)=>setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
                 required
               />
             </Form.Group>
@@ -92,7 +92,7 @@ const AdminAddProducts = () => {
                 type="text"
                 name="price"
                 placeholder="price"
-                onChange={(e)=>setPrice(e.target.value)}
+                onChange={(e) => setPrice(e.target.value)}
                 required
               />
             </Form.Group>
@@ -105,7 +105,6 @@ const AdminAddProducts = () => {
                 required
               />
             </Form.Group>
-           
             <br />
             <Form.Group>
               <Form.Label>Select category:</Form.Label> <br />
@@ -124,8 +123,7 @@ const AdminAddProducts = () => {
                 type="text"
                 name="Stock"
                 placeholder="Stock"
-                
-                onChange={(e)=>setStock(e.target.value)}
+                onChange={(e) => setStock(e.target.value)}
                 required
               />
             </Form.Group>{" "}

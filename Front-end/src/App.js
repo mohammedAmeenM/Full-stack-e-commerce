@@ -22,29 +22,22 @@ import axios from "axios";
 import Wishlist from "./components/Wishlist";
 import Succes from "./components/Succes";
 
-
-
- export const Axios=axios.create({
-  baseURL:process.env.REACT_APP_BASE_URL|| "http://localhost:5000/",
-  headers:{
-    "Content-Type":"application/json",
-    Authorization:localStorage.getItem("user_Token")
-  }
-
- })
- export const AXIOS=axios.create({
-  baseURL:process.env.REACT_APP_BASE_URL|| "http://localhost:5000/",
-  headers:{
-    "Content-Type":"application/json",
-    Authorization:localStorage.getItem("admin_Token")
-  }
-
- })
- console.log(localStorage.getItem("user_Token"));
- console.log(process.env.REACT_APP_BASE_URL);
-
-
-
+export const Axios = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:5000/",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: localStorage.getItem("user_Token"),
+  },
+});
+export const AXIOS = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:5000/",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: localStorage.getItem("admin_Token"),
+  },
+});
+console.log(localStorage.getItem("user_Token"));
+console.log(process.env.REACT_APP_BASE_URL);
 
 export const UserLogin = createContext();
 
@@ -53,7 +46,7 @@ function App() {
   const [login, setLogin] = useState(false);
   const [product, setProduct] = useState(Product);
   const [cart, setCart] = useState([]);
-  const [search, setSearch] = useState("");    //
+  const [search, setSearch] = useState(""); //
   const [buy, setBuy] = useState([]);
 
   return (

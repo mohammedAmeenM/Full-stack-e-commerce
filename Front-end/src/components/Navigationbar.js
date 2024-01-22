@@ -16,10 +16,9 @@ import Login from "./Login";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
- 
-  const { login, setLogin, setCart, user} = useContext(UserLogin);
-  console.log(user);
 
+  const { login, setLogin, setCart, user } = useContext(UserLogin);
+  console.log(user);
 
   const Logout = () => {
     if (login) {
@@ -34,7 +33,7 @@ const Navigationbar = () => {
     <Navbar expand="lg" className="nav" sticky="top">
       <Container fluid className="nav-bar">
         <Navbar.Brand>
-          <h1   
+          <h1
             title="Home"
             style={{ cursor: "pointer" }}
             className="nav-title"
@@ -68,13 +67,11 @@ const Navigationbar = () => {
         </Navbar.Collapse>
         <Navbar.Collapse className="icons" style={{ justifyContent: "end" }}>
           <Nav style={{ gap: "0.6rem", alignItems: "center" }}>
-            
             <Nav.Link
               onClick={() => navigate("/cart")}
               style={{ fontSize: "27px" }}
               title="Cart"
             >
-               
               <HiShoppingCart />
             </Nav.Link>
             <Nav.Link
@@ -82,17 +79,20 @@ const Navigationbar = () => {
               style={{ fontSize: "25px" }}
               title="wishlist"
             >
-               
-               <FaHeart />
+              <FaHeart />
             </Nav.Link>
 
-            { Login? (
-               <NavDropdown  style={{ fontSize: "27px" }} title={<CiLogout onClick={Logout} />} id="basic-nav-dropdown">
-               <NavDropdown.Item href="#action/3.1">{user.email}</NavDropdown.Item>
-               
-             </NavDropdown>
-             
-            ): (
+            {Login ? (
+              <NavDropdown
+                style={{ fontSize: "27px" }}
+                title={<CiLogout onClick={Logout} />}
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item href="#action/3.1">
+                  {user.email}
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
               <Nav.Link
                 onClick={() => navigate("/login")}
                 style={{ fontSize: "27px" }}

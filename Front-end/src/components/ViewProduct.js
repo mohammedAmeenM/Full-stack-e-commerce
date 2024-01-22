@@ -10,46 +10,46 @@ import {
   Container,
 } from "react-bootstrap";
 import { Axios, UserLogin } from "../App";
-import Navigationbar from "./Navigationbar"; 
+import Navigationbar from "./Navigationbar";
 import { toast } from "react-toastify";
-
 
 const ViewProduct = () => {
   const navigate = useNavigate();
-  const {  cart, setCart} = useContext(UserLogin);
+  const { cart, setCart } = useContext(UserLogin);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const userId=localStorage.getItem("userId")
+  const userId = localStorage.getItem("userId");
   console.log(userId);
 
   useEffect(() => {
     const viewProduct = async () => {
       try {
-        const response = await Axios.get(`api/users/products/${id}`)
+        const response = await Axios.get(`api/users/products/${id}`);
         setProduct(response.data.product);
       } catch (error) {
         console.log("error fetching the product", error);
         toast.error("error");
       }
-    }
+    };
     viewProduct();
   }, [id]);
 
-  const handleAddToCart=async()=>{
+  const handleAddToCart = async () => {
     try {
-      const response=await Axios.post(`api/users/${userId}/cart`,{productId:id})
+      const response = await Axios.post(`api/users/${userId}/cart`, {
+        productId: id,
+      });
       console.log(response);
-      if (response){
-          await Axios.get(`/api/users/${userId}/cart`) 
-          return toast.success("Product added to the cart!")
+      if (response) {
+        await Axios.get(`/api/users/${userId}/cart`);
+        return toast.success("Product added to the cart!");
       }
-      
     } catch (error) {
-      console.error('Error adding product to the cart:', error)
-      toast.error(error.response.data.message)
+      console.error("Error adding product to the cart:", error);
+      toast.error(error.response.data.message);
     }
-  }
- 
+  };
+
   return (
     <div style={{ background: "rgb(230, 230, 219)" }}>
       <Navigationbar />
@@ -69,7 +69,6 @@ const ViewProduct = () => {
               }}
             >
               <CardBody>
-                
                 <CardImg
                   style={{ height: "11rem" }}
                   className="p-2"
@@ -80,19 +79,21 @@ const ViewProduct = () => {
                 <CardTitle style={{ textAlign: "center" }}>
                   {product.title}
                 </CardTitle>
-                
+
                 <h6 style={{ textAlign: "center" }}>
                   Offer Price : {product.price}
                 </h6>
-                <p style={{ textAlign: "center" }}>Animal : {product.category}</p>
+                <p style={{ textAlign: "center" }}>
+                  Animal : {product.category}
+                </p>
                 <CardTitle style={{ textAlign: "center" }}>
-                <Button onClick={handleAddToCart} variant="outline-dark">
+                  <Button onClick={handleAddToCart} variant="outline-dark">
                     Add To Cart
                   </Button>
                 </CardTitle>
               </CardBody>
-             
-                {/* {cart.find((cartItem) => cartItem === product[0]._id) ? (
+
+              {/* {cart.find((cartItem) => cartItem === product[0]._id) ? (
                   <Button
                     variant="outline-dark"
                     onClick={() => navigate("/cart")}
@@ -101,10 +102,8 @@ const ViewProduct = () => {
                   </Button>
                 ) : (
                     )} */}
-                  
-             
             </Card>
-            <div style={{color:'rgb(230, 230, 219)'}}>aaa</div>
+            <div style={{ color: "rgb(230, 230, 219)" }}>aaa</div>
           </div>
         )}
       </Container>

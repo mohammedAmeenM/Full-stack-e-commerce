@@ -9,64 +9,60 @@ import { AXIOS } from "../App";
 const EditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [product,setProduct]=useState({
-      title: "",
-      image: "",
-      description: "",
-      price: "",
-      category: "",
-   })
+  const [product, setProduct] = useState({
+    title: "",
+    image: "",
+    description: "",
+    price: "",
+    category: "",
+  });
 
-   useEffect(()=>{
-      const fetchProduct=async()=>{
-        try {
-           const response=await AXIOS.get(`api/admin/products/${id}`)
-           console.log(response.data.product);
-           const { _id, title, image, price, description, category } = response.data.product;
-           setProduct({ 
-            id: _id,
-            title,
-            image,
-            price,
-            category,
-            description
-          })
-         
-        } catch (error) {
-           console.log(error)
-           toast.error(error.message || "Failed to fetch products")
-        }
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await AXIOS.get(`api/admin/products/${id}`);
+        console.log(response.data.product);
+        const { _id, title, image, price, description, category } =
+          response.data.product;
+        setProduct({
+          id: _id,
+          title,
+          image,
+          price,
+          category,
+          description,
+        });
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message || "Failed to fetch products");
       }
-      fetchProduct()
-   },[id])
+    };
+    fetchProduct();
+  }, [id]);
 
- 
-  
-  const submit = async(e) => {
+  const submit = async (e) => {
     e.preventDefault();
     try {
-      const response=await AXIOS.put("api/admin/products",product)
+      const response = await AXIOS.put("api/admin/products", product);
       console.log(response);
       if (response.status === 201) {
         toast.success("Product Edited Successfully");
-        navigate('/adminproduct')
+        navigate("/adminproduct");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
     }
-   
   };
 
-  const handleChange =  (a) => {
+  const handleChange = (a) => {
     const { name, value } = a.target;
-    console.log(value)
+    console.log(value);
     setProduct((PrevData) => ({
       ...PrevData,
       [name]: value,
     }));
   };
-  
 
   return (
     <div style={{ display: "flex" }}>
@@ -85,9 +81,9 @@ const EditProduct = () => {
               <Form.Group>
                 <Form.Label>Edit Img src:</Form.Label>
                 <Form.Control
-                   type="text"
-                   name="title"
-                   id="title"
+                  type="text"
+                  name="title"
+                  id="title"
                   value={product.title}
                   onChange={handleChange}
                 />
@@ -101,7 +97,7 @@ const EditProduct = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-               <Form.Group>
+              <Form.Group>
                 <Form.Label>Edit description:</Form.Label>
                 <Form.Control
                   type="text"
@@ -110,13 +106,13 @@ const EditProduct = () => {
                   value={product.description}
                   onChange={handleChange}
                 />
-              </Form.Group> 
+              </Form.Group>
               <Form.Group>
                 <Form.Label>Edit Actual price:</Form.Label>
                 <Form.Control
-                   type="text"
-                   name="price"
-                   id="price"
+                  type="text"
+                  name="price"
+                  id="price"
                   value={product.price}
                   onChange={handleChange}
                 />

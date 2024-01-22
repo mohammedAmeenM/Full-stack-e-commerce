@@ -2,20 +2,20 @@ import React, { useContext, useRef, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { UserLogin } from "../App";
-import axios from 'axios'
+import axios from "axios";
 import { toast } from "react-toastify";
 
 const Signup = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserLogin);
-  
+
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const [errorMessage,setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const submitClick = async(e) => {
+  const submitClick = async (e) => {
     e.preventDefault();
     const setName = nameRef.current.value;
     const setEmail = emailRef.current.value;
@@ -35,35 +35,41 @@ const Signup = () => {
       return;
     }
     if (user.find((sameuser) => sameuser.name === setName)) {
-      setErrorMessage("Username already exists. Please choose a different one.");
+      setErrorMessage(
+        "Username already exists. Please choose a different one."
+      );
       return;
     }
     setErrorMessage("");
-       const value ={ name: setName, email: setEmail, password: setPassword }
-    
-    setUser([...user,value]);
-    
+    const value = { name: setName, email: setEmail, password: setPassword };
+
+    setUser([...user, value]);
+
     try {
       const data = {
-        "username": setName,
-        "email": setEmail,
-        "password": setPassword
+        username: setName,
+        email: setEmail,
+        password: setPassword,
       };
-    
+
       console.log(data);
-    
-      const response = await axios.post("http://localhost:5000/api/users/register", data, {
-      headers: {
-         "Content-Type": "application/json"
+
+      const response = await axios.post(
+        "http://localhost:5000/api/users/register",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-        });
-    
+      );
+
       console.log(response);
-      toast.success('success');
-      navigate('/login');
+      toast.success("success");
+      navigate("/login");
     } catch (err) {
       console.error(err);
-      toast.error(err.message || 'An error occurred');
+      toast.error(err.message || "An error occurred");
     }
     // navigate("/login");
   };

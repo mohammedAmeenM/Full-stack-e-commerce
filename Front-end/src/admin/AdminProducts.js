@@ -8,38 +8,37 @@ import { AXIOS } from "../App";
 
 const AdminProducts = () => {
   const navigate = useNavigate();
-  const [product,setProduct]=useState([])
+  const [product, setProduct] = useState([]);
 
-  async function allProducts (){
+  async function allProducts() {
     try {
-        const response=await AXIOS.get("api/admin/products")
-        console.log(response.data.products);
-        setProduct(response.data.products)
-      } catch (error) {
-        console.log(error)
-        toast.error(error.message || "Failed to fetch products")
-      }
+      const response = await AXIOS.get("api/admin/products");
+      console.log(response.data.products);
+      setProduct(response.data.products);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Failed to fetch products");
     }
-    useEffect(()=>{
-    allProducts()
-  },[])
+  }
+  useEffect(() => {
+    allProducts();
+  }, []);
 
-  const Remove=async(id)=>{
+  const Remove = async (id) => {
     try {
-     const productId=id;
-     console.log(productId  )
-     const response = await AXIOS.delete("api/admin/products", {
-      data: { productId: productId }  
-    })
-    allProducts()
+      const productId = id;
+      console.log(productId);
+      const response = await AXIOS.delete("api/admin/products", {
+        data: { productId: productId },
+      });
+      allProducts();
       console.log(response);
     } catch (error) {
-      console.log(error)
-        toast.error(error.message || "Failed to fetch products")
+      console.log(error);
+      toast.error(error.message || "Failed to fetch products");
     }
+  };
 
-  }
- 
   return (
     <div style={{ display: "flex" }}>
       <SideBar />
@@ -60,7 +59,6 @@ const AdminProducts = () => {
               <th>Image</th>
               <th>Name</th>
 
-              
               <th>Actual Price</th>
               <th>Animal</th>
               <th>Stock</th>
@@ -77,7 +75,7 @@ const AdminProducts = () => {
                   />
                 </td>
                 <td>{item.title}</td>
-                
+
                 <td>{item.price}</td>
                 <td>{item.category}</td>
                 <td>{item.stock}</td>
@@ -88,7 +86,10 @@ const AdminProducts = () => {
                   >
                     Edit
                   </Button>
-                  <Button className="bg-danger" onClick={()=>Remove(item._id)}>
+                  <Button
+                    className="bg-danger"
+                    onClick={() => Remove(item._id)}
+                  >
                     Remove
                   </Button>
                 </td>

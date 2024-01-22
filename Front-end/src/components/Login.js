@@ -10,7 +10,7 @@ const Login = () => {
   const passwordRef = useRef(null);
   const [error, setErrorMessage] = useState("");
 
-  const handileclick = async(e) => {
+  const handileclick = async (e) => {
     e.preventDefault();
     const newNameRef = nameRef.current.value;
     const newPasswordRef = passwordRef.current.value;
@@ -20,26 +20,28 @@ const Login = () => {
     }
 
     try {
-      const data={
-        "username":newNameRef,
-        "password":newPasswordRef
+      const data = {
+        username: newNameRef,
+        password: newPasswordRef,
       };
-      const response= await axios.post("http://localhost:5000/api/users/login",data)
+      const response = await axios.post(
+        "http://localhost:5000/api/users/login",
+        data
+      );
       console.log(response.data.data.user._id);
-      if(response.status===200){
-      localStorage.setItem("user_Token",response.data.token)
-      localStorage.setItem("userId",response.data.data.user._id)
-      setTimeout(() => {
-        localStorage.removeItem("user_Token")
-        localStorage.removeItem("userId")
-      }, 3600000);
-      console.log(response.data.token);
-      toast.success('success');
-      navigate('/');
+      if (response.status === 200) {
+        localStorage.setItem("user_Token", response.data.token);
+        localStorage.setItem("userId", response.data.data.user._id);
+        setTimeout(() => {
+          localStorage.removeItem("user_Token");
+          localStorage.removeItem("userId");
+        }, 3600000);
+        console.log(response.data.token);
+        toast.success("success");
+        navigate("/");
       }
-
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
 
     // const findName = user.find((users) => users.name === newNameRef);
@@ -52,7 +54,7 @@ const Login = () => {
     // }
     // if (!findPassword) {
     //   setErrorMessage("please correct Password");
-    //   return;   
+    //   return;
     // }
 
     // if (findName && findPassword) {

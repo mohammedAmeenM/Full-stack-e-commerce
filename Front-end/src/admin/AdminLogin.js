@@ -9,7 +9,7 @@ const AdminLogin = () => {
   const adminEmail = useRef();
   const adminPassword = useRef();
   const [error, setErrorMessage] = useState("");
-  const handileAdmin =async () => {
+  const handileAdmin = async () => {
     const newAdminEmail = adminEmail.current.value;
     const newAdminPassword = adminPassword.current.value;
 
@@ -25,22 +25,22 @@ const AdminLogin = () => {
       setErrorMessage("please enter correct Password");
     }
     try {
-      const data={
-        email:newAdminEmail,
-        password:newAdminPassword
-      }
+      const data = {
+        email: newAdminEmail,
+        password: newAdminPassword,
+      };
 
-      const response=await axios.post('http://localhost:5000/api/admin/login',data)
+      const response = await axios.post(
+        "http://localhost:5000/api/admin/login",
+        data
+      );
       console.log(response.data.data);
-      localStorage.setItem("admin_Token",response.data.data)
+      localStorage.setItem("admin_Token", response.data.data);
       toast.success("admin Login success");
       navigate("/adminpage");
     } catch (error) {
-      toast.error("please enter valied username or password"||error); 
+      toast.error("please enter valied username or password" || error);
     }
-    
-
-   
   };
   return (
     <div>

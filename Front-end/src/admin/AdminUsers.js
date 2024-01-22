@@ -5,20 +5,20 @@ import { toast } from "react-toastify";
 import { AXIOS } from "../App";
 
 const AdminUsers = () => {
-  const [user,setUser]=useState([]);
-  useEffect(()=>{
-    const allUsers=async()=>{
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    const allUsers = async () => {
       try {
-        const response=await AXIOS.get("api/admin/users")
+        const response = await AXIOS.get("api/admin/users");
         console.log(response.data.data);
-        setUser(response.data.data)
+        setUser(response.data.data);
       } catch (error) {
-        console.log(error)
-        toast.error(error.message || "Failed to fetch users")
+        console.log(error);
+        toast.error(error.message || "Failed to fetch users");
       }
-    }
-    allUsers() 
-  },[])
+    };
+    allUsers();
+  }, []);
   return (
     <div style={{ display: "flex" }}>
       <SideBar />
