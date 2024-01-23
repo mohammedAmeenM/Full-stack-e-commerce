@@ -1,44 +1,41 @@
-const express=require('express');
-const userController=require('../Controllers/userController');
-const userRouter=express.Router()
-const verifyToken=require('../middlewares/userAuth')
+const express = require("express");
+const userController = require("../Controllers/userController");
+const userRouter = express.Router();
+const verifyToken = require("../middlewares/userAuth");
 
 //user register and login-------------
 
-userRouter.post('/register',(userController.createUser))
-.post('/login',(userController.userLogin))
+userRouter
+  .post("/register", userController.createUser)
+  .post("/login", userController.userLogin)
 
-//user get products-----------------
+  //user get products-----------------
 
-.get('/products',(userController.userViewProduct))
-.get('/products/category/:categoryname',(userController.productListCategory))
-//Token Verify--------------------
+  .get("/products", userController.userViewProduct)
+  .get("/products/category/:categoryname", userController.productListCategory)
+  //Token Verify--------------------
 
-.use(verifyToken)
-.get('/products/:id',(userController.productById))
+  .use(verifyToken)
+  .get("/products/:id", userController.productById)
 
+  //user product add to cart----and view cart------------------
 
+  .post("/:id/cart", userController.addToCart)
+  .get("/:id/cart", userController.viewCartProducts)
+  .delete("/:id/cart", userController.deleteCartproducts)
 
+  //user product add to wishlist---- view wishlist------and delete------------
 
-//user product add to cart----and view cart------------------
+  .post("/:id/wishlist", userController.addToWishList)
+  .get("/:id/wishlist", userController.viewWishlist)
+  .delete("/:id/wishlist", userController.deleteWishlist)
 
+  //user payment section-----------
 
-.post('/:id/cart',(userController.addToCart))
-.get ('/:id/cart',(userController.viewCartProducts))
-.delete('/:id/cart',(userController.deleteCartproducts))
+  .post("/:id/payment", userController.paymentSession)
+  .get("/payment/success", userController.successPayment)
 
-//user product add to wishlist---- view wishlist------and delete------------
+  //user orderlist ---------------------------------
 
-.post('/:id/wishlist',(userController.addToWishList))
-.get('/:id/wishlist',(userController.viewWishlist))
-.delete('/:id/wishlist',(userController.deleteWishlist))
-
-//user payment section-----------
-
-.post('/:id/payment',(userController.paymentSession))
-.get('/payment/success',(userController.successPayment))
-
-//user orderlist ---------------------------------  
-
-.get('/:id/orders',(userController.orderDetails))
-module.exports=userRouter; 
+  .get("/:id/orders", userController.orderDetails);
+module.exports = userRouter;
