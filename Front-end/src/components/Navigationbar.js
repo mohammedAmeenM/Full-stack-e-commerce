@@ -6,19 +6,18 @@ import "./Navigation.css";
 import { useNavigate } from "react-router-dom";
 import { HiShoppingCart } from "react-icons/hi2";
 import { RiAdminFill } from "react-icons/ri";
-import { CiLogin } from "react-icons/ci";
+import { CiLogin, CiLogout } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { UserLogin } from "../App";
-import { CiLogout } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { NavDropdown } from "react-bootstrap";
 import Login from "./Login";
+import { FaHouseUser } from "react-icons/fa";
 
 const Navigationbar = () => {
   const navigate = useNavigate();
 
   const { login, setLogin, setCart, user } = useContext(UserLogin);
-  console.log(user);
 
   const Logout = () => {
     if (login) {
@@ -29,6 +28,7 @@ const Navigationbar = () => {
       navigate("/login");
     }
   };
+
   return (
     <Navbar expand="lg" className="nav" sticky="top">
       <Container fluid className="nav-bar">
@@ -65,43 +65,8 @@ const Navigationbar = () => {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        <Navbar.Collapse className="icons" style={{ justifyContent: "end" }}>
+        <Navbar.Collapse className="icons" style={{ justifyContent: "end"}}>
           <Nav style={{ gap: "0.6rem", alignItems: "center" }}>
-            <Nav.Link
-              onClick={() => navigate("/cart")}
-              style={{ fontSize: "27px" }}
-              title="Cart"
-            >
-              <HiShoppingCart />
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => navigate("/wishlist")}
-              style={{ fontSize: "25px" }}
-              title="wishlist"
-            >
-              <FaHeart />
-            </Nav.Link>
-
-            {Login ? (
-              <NavDropdown
-                style={{ fontSize: "27px" }}
-                title={<CiLogout onClick={Logout} />}
-                id="basic-nav-dropdown"
-              >
-                <NavDropdown.Item href="#action/3.1">
-                  {user.email}
-                </NavDropdown.Item>
-              </NavDropdown>
-            ) : (
-              <Nav.Link
-                onClick={() => navigate("/login")}
-                style={{ fontSize: "27px" }}
-                title="login"
-              >
-                <CiLogin />
-              </Nav.Link>
-            )}
-
             <Nav.Link
               style={{ fontSize: "27px" }}
               onClick={() => navigate("/adminlogin")}
@@ -109,6 +74,41 @@ const Navigationbar = () => {
             >
               <RiAdminFill />
             </Nav.Link>
+            <NavDropdown
+              style={{ fontSize: "27px" }}
+              title={<FaHouseUser />}
+              id="basic-nav-dropdown"
+            >
+              <NavDropdown.Item href="#action/3.1"></NavDropdown.Item>
+              {/* Add more user profile details here */}
+              <NavDropdown.Item>
+                <Nav.Link
+                  onClick={() => navigate("/cart")}
+                  style={{ fontSize: "27px" }}
+                  title="Cart"
+                >
+                  <HiShoppingCart />
+                </Nav.Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <Nav.Link
+                  onClick={() => navigate("/wishlist")}
+                  style={{ fontSize: "25px" }}
+                  title="wishlist"
+                >
+                  <FaHeart />
+                </Nav.Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <Nav.Link
+                  onClick={() => navigate("/login")}
+                  style={{ fontSize: "27px" }}
+                  title="login"
+                >
+                  <CiLogin />
+                </Nav.Link>
+              </NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>
