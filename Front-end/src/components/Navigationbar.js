@@ -23,7 +23,7 @@ const Navigationbar = () => {
     if (login) {
       setLogin(false);
       setCart([]);
-      toast.success("Logout Success");
+      toast.success("Logout User");
     } else {
       navigate("/login");
     }
